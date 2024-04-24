@@ -17,6 +17,8 @@ elseif(CONFIG_LV_TFT_DISPLAY_CONTROLLER_ILI9488)
     list(APPEND SOURCES "lvgl_tft/ili9488.c")
 elseif(CONFIG_LV_TFT_DISPLAY_CONTROLLER_ST7789)
     list(APPEND SOURCES "lvgl_tft/st7789.c")
+elseif(CONFIG_LV_TFT_DISPLAY_CONTROLLER_ST7789V)
+    list(APPEND SOURCES "lvgl_tft/st7789v.c")
 elseif(CONFIG_LV_TFT_DISPLAY_CONTROLLER_ST7735S)
     list(APPEND SOURCES "lvgl_tft/st7735s.c")
 elseif(CONFIG_LV_TFT_DISPLAY_CONTROLLER_ST7796S)
@@ -73,6 +75,8 @@ if(CONFIG_LV_TOUCH_CONTROLLER)
         list(APPEND SOURCES "lvgl_touch/ra8875_touch.c")
     elseif(CONFIG_LV_TOUCH_CONTROLLER_GT911)
         list(APPEND SOURCES "lvgl_touch/gt911.c")
+    elseif(CONFIG_LV_TOUCH_CONTROLLER_CST816T)
+        list(APPEND SOURCES "lvgl_touch/cst816t.c")
     endif()
 
     if(CONFIG_LV_TOUCH_DRIVER_PROTOCOL_SPI)
@@ -86,7 +90,7 @@ endif()
 
 idf_component_register(SRCS ${SOURCES}
                        INCLUDE_DIRS ${LVGL_INCLUDE_DIRS}
-                       REQUIRES lvgl)
+                       REQUIRES lvgl driver soc)
 
 target_compile_definitions(${COMPONENT_LIB} PUBLIC "-DLV_LVGL_H_INCLUDE_SIMPLE")
 

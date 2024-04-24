@@ -39,6 +39,8 @@ extern "C" {
 #else
 #if defined (CONFIG_LV_TFT_DISPLAY_CONTROLLER_ST7789)
 #define DISP_BUF_SIZE  (LV_HOR_RES_MAX * 40)
+#elif defined (CONFIG_LV_TFT_DISPLAY_CONTROLLER_ST7789V)
+#define DISP_BUF_SIZE  (LV_HOR_RES_MAX * 40)
 #elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_ST7735S
 #define DISP_BUF_SIZE  (LV_HOR_RES_MAX * 40)
 #elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_ST7796S
@@ -104,6 +106,8 @@ bool lvgl_spi_driver_init(int host, int miso_pin, int mosi_pin, int sclk_pin,
  *      MACROS
  **********************/
 
+#define LV_HOR_RES_MAX 240
+#define LV_VER_RES_MAX 280
 
 #ifdef __cplusplus
 } /* extern "C" */

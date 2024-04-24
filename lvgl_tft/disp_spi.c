@@ -312,8 +312,10 @@ static void IRAM_ATTR spi_ready(spi_transaction_t *trans)
 
 #if LVGL_VERSION_MAJOR < 8
         lv_disp_flush_ready(&disp->driver);
-#else
+#elif LVGL_VERSION_MAJOR == 8
         lv_disp_flush_ready(disp->driver);
+#else
+        lv_disp_flush_ready(disp);
 #endif
 
     }

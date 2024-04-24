@@ -105,7 +105,7 @@ void ft6x06_init(uint16_t dev_addr) {
   * @param  data: Store data here
   * @retval Always false
   */
-bool ft6x36_read(lv_indev_drv_t *drv, lv_indev_data_t *data) {
+bool ft6x36_read(lv_indev_t *drv, lv_indev_data_t *data) {
     if (!ft6x36_status.inited) {
         ESP_LOGE(TAG, "Init first!");
         return 0x00;
