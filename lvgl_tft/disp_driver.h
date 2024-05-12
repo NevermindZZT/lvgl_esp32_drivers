@@ -74,7 +74,7 @@ extern "C" {
 void *disp_driver_init(void);
 
 /* Display flush callback */
-void disp_driver_flush(lv_display_t * drv, const lv_area_t * area, lv_color_t * color_map);
+void disp_driver_flush(lv_display_t * drv, const lv_area_t * area, uint8_t * color_map);
 
 /* Display rounder callback, used with monochrome dispays */
 void disp_driver_rounder(lv_display_t * disp_drv, lv_area_t * area);

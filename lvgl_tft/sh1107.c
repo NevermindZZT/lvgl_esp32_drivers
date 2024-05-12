@@ -141,7 +141,7 @@ void sh1107_set_px_cb(struct _disp_drv_t * disp_drv, uint8_t * buf, lv_coord_t b
     }
 }
 
-void sh1107_flush(lv_display_t * drv, const lv_area_t * area, lv_color_t * color_map)
+void sh1107_flush(lv_display_t * drv, const lv_area_t * area, uint8_t * color_map)
 {
     uint8_t columnLow = area->x1 & 0x0F;
 	uint8_t columnHigh = (area->x1 >> 4) & 0x0F;

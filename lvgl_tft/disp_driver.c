@@ -75,7 +75,7 @@ void *disp_driver_init(void)
 #endif
 }
 
-void disp_driver_flush(lv_display_t * drv, const lv_area_t * area, lv_color_t * color_map)
+void disp_driver_flush(lv_display_t * drv, const lv_area_t * area, uint8_t * color_map)
 {
 #if defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_ILI9341
     ili9341_flush(drv, area, color_map);
@@ -116,6 +116,7 @@ void disp_driver_flush(lv_display_t * drv, const lv_area_t * area, lv_color_t * 
 #elif defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_PCD8544
     pcd8544_flush(drv, area, color_map);
 #endif
+    lv_display_flush_ready(drv);
 }
 
 void disp_driver_rounder(lv_display_t * disp_drv, lv_area_t * area)

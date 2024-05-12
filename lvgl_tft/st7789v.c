@@ -109,7 +109,7 @@ void st7789v_init(void)
         st7789v_send_cmd(st7789v_init_cmds[cmd].cmd);
         st7789v_send_data(st7789v_init_cmds[cmd].data, st7789v_init_cmds[cmd].databytes&0x1F);
         if (st7789v_init_cmds[cmd].databytes & 0x80) {
-                vTaskDelay(100 / portTICK_PERIOD_MS);
+            vTaskDelay(100 / portTICK_PERIOD_MS);
         }
         cmd++;
     }
@@ -117,7 +117,7 @@ void st7789v_init(void)
     st7789v_set_orientation(CONFIG_LV_DISPLAY_ORIENTATION);
 }
 
-void st7789v_flush(lv_display_t * drv, const lv_area_t * area, lv_color_t * color_map)
+void st7789v_flush(lv_display_t * drv, const lv_area_t * area, uint8_t * color_map)
 {
     uint8_t data[4] = {0};
 
@@ -148,6 +148,13 @@ void st7789v_flush(lv_display_t * drv, const lv_area_t * area, lv_color_t * colo
     st7789v_send_cmd(ST7789V_RAMWR);
 
     size_t size = (size_t)lv_area_get_width(area) * (size_t)lv_area_get_height(area);
+
+#if defined (ST7789V_COLOR_16_SWAP)
+    uint16_t *color_p = (uint16_t *)color_map;
+    for (int i = 0; i < size; i++) {
+        color_p[i] = (color_p[i] >> 8) | (color_p[i] << 8);
+    }
+#endif
     st7789v_send_color((void*)color_map, size * 2 );
     
 

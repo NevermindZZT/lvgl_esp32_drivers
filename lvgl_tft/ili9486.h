@@ -28,6 +28,7 @@ extern "C" {
 #define ILI9486_DC      CONFIG_LV_DISP_PIN_DC
 #define ILI9486_RST     CONFIG_LV_DISP_PIN_RST
 #define ILI9486_USE_RST CONFIG_LV_DISP_USE_RST
+#define ILI9486_COLOR_16_SWAP CONFIG_LV_COLOR_16_SWAP
 
 
 /**********************
@@ -39,7 +40,7 @@ extern "C" {
  **********************/
 
 void ili9486_init(void);
-void ili9486_flush(lv_display_t * drv, const lv_area_t * area, lv_color_t * color_map);
+void ili9486_flush(lv_display_t * drv, const lv_area_t * area, uint8_t * color_map);
 
 /**********************
  *      MACROS

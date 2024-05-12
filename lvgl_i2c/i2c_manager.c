@@ -35,6 +35,7 @@ SOFTWARE.
 #include "freertos/semphr.h"
 #include "freertos/task.h"
 #include <driver/i2c.h>
+#include <hal/i2c_types.h>
 
 #include "sdkconfig.h"
 

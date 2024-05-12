@@ -120,7 +120,7 @@ void st7796s_init(void)
 #endif
 }
 
-void st7796s_flush(lv_display_t *drv, const lv_area_t *area, lv_color_t *color_map)
+void st7796s_flush(lv_display_t *drv, const lv_area_t *area, uint8_t *color_map)
 {
 	uint8_t data[4];
 

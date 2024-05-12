@@ -3,11 +3,14 @@
  */
 
 #include "touch_driver.h"
+#include "esp_log.h"
+#include "lvgl_i2c/i2c_manager.h"
 #include "tp_spi.h"
 
 
 void touch_driver_init(void)
 {
+    lvgl_i2c_init(CONFIG_LV_I2C_TOUCH_PORT);
 #if defined (CONFIG_LV_TOUCH_CONTROLLER_XPT2046)
     xpt2046_init();
 #elif defined (CONFIG_LV_TOUCH_CONTROLLER_FT6X06)

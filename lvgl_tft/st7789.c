@@ -86,20 +86,20 @@ void st7789_init(void)
     };
 
     //Initialize non-SPI GPIOs
-    gpio_pad_select_gpio(ST7789_DC);
+    gpio_reset_pin(ST7789_DC);
     gpio_set_direction(ST7789_DC, GPIO_MODE_OUTPUT);
 
 #if !defined(ST7789_SOFT_RST)
-    gpio_pad_select_gpio(ST7789_RST);
+    gpio_reset_pin(ST7789_RST);
     gpio_set_direction(ST7789_RST, GPIO_MODE_OUTPUT);
 #endif
 
     //Reset the display
 #if !defined(ST7789_SOFT_RST)
     gpio_set_level(ST7789_RST, 0);
-    vTaskDelay(100 / portTICK_RATE_MS);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
     gpio_set_level(ST7789_RST, 1);
-    vTaskDelay(100 / portTICK_RATE_MS);
+    vTaskDelay(100 / portTICK_PERIOD_MS);
 #else
     st7789_send_cmd(ST7789_SWRESET);
 #endif
@@ -112,7 +112,7 @@ void st7789_init(void)
         st7789_send_cmd(st7789_init_cmds[cmd].cmd);
         st7789_send_data(st7789_init_cmds[cmd].data, st7789_init_cmds[cmd].databytes&0x1F);
         if (st7789_init_cmds[cmd].databytes & 0x80) {
-                vTaskDelay(100 / portTICK_RATE_MS);
+                vTaskDelay(100 / portTICK_PERIOD_MS);
         }
         cmd++;
     }
@@ -123,7 +123,7 @@ void st7789_init(void)
 /* The ST7789 display controller can drive up to 320*240 displays, when using a 240*240 or 240*135
  * displays there's a gap of 80px or 40/52/53px respectively. 52px or 53x offset depends on display orientation.
  * We need to edit the coordinates to take into account those gaps, this is not necessary in all orientations. */
-void st7789_flush(lv_display_t * drv, const lv_area_t * area, lv_color_t * color_map)
+void st7789_flush(lv_display_t * drv, const lv_area_t * area, uint8_t * color_map)
 {
     uint8_t data[4] = {0};
 
@@ -185,6 +185,12 @@ void st7789_flush(lv_display_t * drv, const lv_area_t * area, lv_color_t * color
 
     size_t size = (size_t)lv_area_get_width(area) * (size_t)lv_area_get_height(area);
 
+#if defined (ST7789_COLOR_16_SWAP)
+    uint16_t *color_p = (uint16_t *)color_map;
+    for (int i = 0; i < size; i++) {
+        color_p[i] = (color_p[i] >> 8) | (color_p[i] << 8);
+    }
+#endif
     st7789_send_color((void*)color_map, size * 2);
 
 }

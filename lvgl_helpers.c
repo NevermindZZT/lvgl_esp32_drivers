@@ -40,6 +40,7 @@
 /**********************
  *  STATIC VARIABLES
  **********************/
+static disp_backlight_h *disp_backlight = NULL;
 
 /**********************
  *      MACROS
@@ -69,7 +70,7 @@ void lvgl_driver_init(void)
         DISP_SPI_IO2, DISP_SPI_IO3);
 
     disp_spi_add_device(TFT_SPI_HOST);
-    disp_driver_init();
+    disp_backlight = disp_driver_init();
 
 #if defined (CONFIG_LV_TOUCH_CONTROLLER_FT81X)
     touch_driver_init();
@@ -89,7 +90,7 @@ void lvgl_driver_init(void)
     disp_spi_add_device(TFT_SPI_HOST);
     tp_spi_add_device(TOUCH_SPI_HOST);
 
-    disp_driver_init();
+    disp_backlight = disp_driver_init();
     touch_driver_init();
 
     return;
@@ -101,14 +102,14 @@ void lvgl_driver_init(void)
 
     lvgl_spi_driver_init(TFT_SPI_HOST,
         DISP_SPI_MISO, DISP_SPI_MOSI, DISP_SPI_CLK,
-        SPI_BUS_MAX_TRANSFER_SZ, 1,
+        SPI_BUS_MAX_TRANSFER_SZ, 3,
         DISP_SPI_IO2, DISP_SPI_IO3);
 
     disp_spi_add_device(TFT_SPI_HOST);
 
-    disp_driver_init();
+    disp_backlight = disp_driver_init();
 #elif defined (CONFIG_LV_I2C_DISPLAY)
-    disp_driver_init();
+    disp_backlight = disp_driver_init();
 #else
 #error "No protocol defined for display controller"
 #endif
@@ -179,7 +180,23 @@ bool lvgl_spi_driver_init(int host,
     dma_channel = SPI_DMA_CH_AUTO;
     #endif
     esp_err_t ret = spi_bus_initialize(host, &buscfg, (spi_dma_chan_t)dma_channel);
-    assert(ret == ESP_OK);
+    // assert(ret == ESP_OK);
+    if (ret != ESP_OK) {
+        ESP_LOGE(TAG, "Failed to initialize SPI bus. ret = %d", ret);
+        return false;
+    }
 
     return ESP_OK != ret;
+}
+
+bool lval_set_backlight(int brightness_percent)
+{
+    if (disp_backlight == NULL) {
+        ESP_LOGE(TAG, "Backlight controller not initialized");
+        return false;
+    }
+
+    disp_backlight_set(disp_backlight, brightness_percent);
+
+    return true;
 }

@@ -195,7 +195,7 @@ void ra8875_enable_display(bool enable)
 }
 
 
-void ra8875_flush(lv_display_t * drv, const lv_area_t * area, lv_color_t * color_map)
+void ra8875_flush(lv_display_t * drv, const lv_area_t * area, uint8_t * color_map)
 {
     static lv_coord_t x1 = LV_COORD_MIN;
     static lv_coord_t x2 = LV_COORD_MIN;
@@ -237,6 +237,12 @@ void ra8875_flush(lv_display_t * drv, const lv_area_t * area, lv_color_t * color
         y = 0;
     }
 
+#if defined (RA8875COLOR_16_SWAP)
+    uint16_t *color_p = (uint16_t *)buffer;
+    for (int i = 0; i < size; i++) {
+        color_p[i] = (color_p[i] >> 8) | (color_p[i] << 8);
+    }
+#endif
     // Write data
     ra8875_send_buffer(buffer, (area->y2 - area->y1 + 1)*BYTES_PER_PIXEL*linelen, true);
 

@@ -134,7 +134,7 @@ void st7735s_init(void)
     st7735s_set_orientation(CONFIG_LV_DISPLAY_ORIENTATION);
 }
 
-void st7735s_flush(lv_display_t * drv, const lv_area_t * area, lv_color_t * color_map)
+void st7735s_flush(lv_display_t * drv, const lv_area_t * area, uint8_t * color_map)
 {
 	uint8_t data[4];
 
@@ -158,6 +158,13 @@ void st7735s_flush(lv_display_t * drv, const lv_area_t * area, lv_color_t * colo
 	st7735s_send_cmd(0x2C);
 
 	uint32_t size = lv_area_get_width(area) * lv_area_get_height(area);
+
+#if defined (ST7735S_COLOR_16_SWAP)
+    uint16_t *color_p = (uint16_t *)color_map;
+    for (int i = 0; i < size; i++) {
+        color_p[i] = (color_p[i] >> 8) | (color_p[i] << 8);
+    }
+#endif
 	st7735s_send_color((void*)color_map, size * 2);
 }
 

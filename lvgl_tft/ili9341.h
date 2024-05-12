@@ -30,6 +30,7 @@ extern "C" {
 #define ILI9341_USE_RST   CONFIG_LV_DISP_USE_RST
 #define ILI9341_RST       CONFIG_LV_DISP_PIN_RST
 #define ILI9341_INVERT_COLORS CONFIG_LV_INVERT_COLORS
+#define ILI9341_COLOR_16_SWAP CONFIG_LV_COLOR_16_SWAP
 
 /**********************
  *      TYPEDEFS
@@ -40,7 +41,7 @@ extern "C" {
  **********************/
 
 void ili9341_init(void);
-void ili9341_flush(lv_display_t * drv, const lv_area_t * area, lv_color_t * color_map);
+void ili9341_flush(lv_display_t * drv, const lv_area_t * area, uint8_t * color_map);
 void ili9341_sleep_in(void);
 void ili9341_sleep_out(void);
 

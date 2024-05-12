@@ -30,6 +30,7 @@ extern "C" {
 #define ST7735S_USE_RST  CONFIG_LV_DISP_USE_RST
 
 #define ST7735S_INVERT_COLORS CONFIG_LV_INVERT_COLORS
+#define ST7735S_COLOR_16_SWAP CONFIG_LV_COLOR_16_SWAP
 
 // Defines are taken from
 //      https://raw.githubusercontent.com/m5stack/M5StickC/master/src/utility/ST7735_Defines.h
@@ -130,7 +131,7 @@ extern "C" {
  **********************/
 
 void st7735s_init(void);
-void st7735s_flush(lv_display_t * drv, const lv_area_t * area, lv_color_t * color_map);
+void st7735s_flush(lv_display_t * drv, const lv_area_t * area, uint8_t * color_map);
 void st7735s_sleep_in(void);
 void st7735s_sleep_out(void);
 

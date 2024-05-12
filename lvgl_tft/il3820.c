@@ -104,7 +104,7 @@ static void il3820_update_display(void);
 static void il3820_clear_cntlr_mem(uint8_t ram_cmd, bool update);
 
 /* Required by LVGL */
-void il3820_flush(lv_display_t *drv, const lv_area_t *area, lv_color_t *color_map)
+void il3820_flush(lv_display_t *drv, const lv_area_t *area, uint8_t *color_map)
 {
     /* Each byte holds the data of 8 pixels, linelen is the number of bytes
      * we need to cover a line of the display. */

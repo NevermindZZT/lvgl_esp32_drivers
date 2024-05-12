@@ -96,13 +96,13 @@ void cst816t_init(uint16_t dev_addr)
         // cst816t_read_len(0x15, buf,1);
         if ((ret = cst816t_i2c_read(dev_addr, 0x15, &data_buf, 1) != ESP_OK)) {
             vTaskDelay(pdMS_TO_TICKS(10));
-            ESP_LOGE(TAG, "Error reading from device: %s",
-                        esp_err_to_name(ret));    // Only show error the first time
+            ESP_LOGE(TAG, "Error reading from device: %s, %d",
+                        esp_err_to_name(ret), ret);    // Only show error the first time
             // return;
         }
         if ((ret = cst816t_i2c_read(dev_addr, 0xa7, &data_buf, 1) != ESP_OK)) {
-            ESP_LOGE(TAG, "Error reading from device: %s",
-                        esp_err_to_name(ret));    // Only show error the first time
+            ESP_LOGE(TAG, "Error reading from device: %s, %d",
+                        esp_err_to_name(ret), ret);    // Only show error the first time
             ESP_LOGE(TAG, "device ID: %02x", data_buf[0]);            
             // return;
         }
@@ -155,10 +155,11 @@ bool cst816t_read(lv_indev_t *drv, lv_indev_data_t *data) {
     y = swap_buf;
 #endif
 
-    data->point.x = x;
-    data->point.y = y;
     if (touch_points_num > 0){
+        data->point.x = x;
+        data->point.y = y;
         data->state = LV_INDEV_STATE_PR;
+        // ESP_LOGI(TAG, "X=%u Y=%u", (int)x, (int)y);
     }
     else{
         data->state = LV_INDEV_STATE_REL;

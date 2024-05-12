@@ -3,11 +3,13 @@
 For a ready to use ESP32 project take look at the [lv_port_esp32](https://github.com/lvgl/lv_port_esp32) repository.
 
 #### Table of content
-- [Supported display controllers](#supported-display-controllers)
-- [Supported indev controllers](#supported-indev-controllers)
-- [Support for predefined development kits](#support-for-predefined-development-kits)
-- [Thread-safe I2C with I2C Manager](#thread-safe-i2c-with-i2c-manager)
-- [Backlight control](#backlight-control)
+- [Display and touchpad drivers for ESP32 using LVGL](#display-and-touchpad-drivers-for-esp32-using-lvgl)
+      - [Table of content](#table-of-content)
+  - [Supported display controllers](#supported-display-controllers)
+  - [Supported indev controllers](#supported-indev-controllers)
+  - [Support for predefined development kits](#support-for-predefined-development-kits)
+  - [Thread-safe I2C with I2C Manager](#thread-safe-i2c-with-i2c-manager)
+  - [Backlight control](#backlight-control)
 
 **NOTE:** You need to set the display horizontal and vertical size, color depth and
 swap of RGB565 color on the LVGL configuration menuconfig (it's not handled automatically).
@@ -24,6 +26,7 @@ swap of RGB565 color on the LVGL configuration menuconfig (it's not handled auto
 | ILI9488                                     | TFT        | SPI                    | 16: RGB565                   | No                                     |
 | HX8357B/HX8357D                             | TFT        | SPI                    | 16: RGB565                   | Yes                                    |
 | ST7789                                      | TFT        | SPI                    | 16: RGB565                   | Yes                                    |
+| ST7789V                                     | TFT        | SPI                    | 16: RGB565                   | Yes                                    |
 | ST7735S                                     | TFT        | SPI                    | 16: RGB565                   | Yes                                    |
 | FT81x                                       | TFT        | Single, Dual, Quad SPI | 16: RGB565                   | No                                     |
 | GC9A01                                      | TFT        | SPI                    | 16: RGB565                   | Yes                                    |
@@ -42,6 +45,7 @@ swap of RGB565 color on the LVGL configuration menuconfig (it's not handled auto
 - FT6206 controllers should work as well (not tested)
 - STMPE610
 - FT81x (Single, Dual, and Quad SPI)
+- CST816x
 
 If your display or input device (touch) controller is not supported consider contributing to this repo by
 adding support to it! [Contribute controller support](CONTRIBUTE_CONTROLLER_SUPPORT.md)

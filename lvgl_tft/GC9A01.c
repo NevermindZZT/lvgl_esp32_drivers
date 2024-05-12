@@ -149,7 +149,7 @@ void GC9A01_init(void)
 }
 
 
-void GC9A01_flush(lv_display_t * drv, const lv_area_t * area, lv_color_t * color_map)
+void GC9A01_flush(lv_display_t * drv, const lv_area_t * area, uint8_t * color_map)
 {
 	uint8_t data[4];
 
@@ -175,6 +175,12 @@ void GC9A01_flush(lv_display_t * drv, const lv_area_t * area, lv_color_t * color
 
 	uint32_t size = lv_area_get_width(area) * lv_area_get_height(area);
 
+#if defined (GC9A01_COLOR_16_SWAP)
+    uint16_t *color_p = (uint16_t *)color_map;
+    for (int i = 0; i < size; i++) {
+        color_p[i] = (color_p[i] >> 8) | (color_p[i] << 8);
+    }
+#endif
 	GC9A01_send_color((void*)color_map, size * 2);
 }
 

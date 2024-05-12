@@ -131,7 +131,11 @@ void disp_spi_add_device_with_speed(spi_host_device_t host, int clock_speed_hz)
         .pre_cb=NULL,
         .post_cb=NULL,
 #if defined(DISP_SPI_HALF_DUPLEX)
+    #if defined(CONFIG_LV_DISPLAY_USE_SPI_MISO)
         .flags = SPI_DEVICE_NO_DUMMY | SPI_DEVICE_HALFDUPLEX,	/* dummy bits should be explicitly handled via DISP_SPI_VARIABLE_DUMMY as needed */
+    #else
+        .flags = SPI_DEVICE_NO_DUMMY | SPI_DEVICE_HALFDUPLEX | SPI_DEVICE_3WIRE,
+    #endif
 #else
 	#if defined (CONFIG_LV_TFT_DISPLAY_CONTROLLER_FT81X)
 		.flags = 0,
