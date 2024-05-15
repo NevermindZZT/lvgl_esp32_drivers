@@ -63,3 +63,17 @@ bool touch_driver_read(lv_indev_t *drv, lv_indev_data_t *data)
 #endif
 }
 
+void touch_driver_set_calibrate(touch_calibration_t *cb)
+{
+#if defined (CONFIG_LV_TOUCH_CONTROLLER_XPT2046)
+#elif defined (CONFIG_LV_TOUCH_CONTROLLER_FT6X06)
+#elif defined (CONFIG_LV_TOUCH_CONTROLLER_STMPE610)
+#elif defined (CONFIG_LV_TOUCH_CONTROLLER_ADCRAW)
+#elif defined (CONFIG_LV_TOUCH_CONTROLLER_FT81X)
+#elif defined (CONFIG_LV_TOUCH_CONTROLLER_RA8875)
+#elif defined (CONFIG_LV_TOUCH_CONTROLLER_GT911)
+#elif defined (CONFIG_LV_TOUCH_CONTROLLER_CST816T)
+    cst816_t_set_calibrate_data(cb->x_start, cb->x_end, cb->y_start, cb->y_end);
+#endif
+}
+

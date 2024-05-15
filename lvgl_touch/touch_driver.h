@@ -41,6 +41,12 @@ extern "C" {
 /*********************
 *      DEFINES
 *********************/
+typedef struct {
+    uint32_t x_start;
+    uint32_t x_end;
+    uint32_t y_start;
+    uint32_t y_end;
+} touch_calibration_t;
 
 /**********************
  * GLOBAL PROTOTYPES
@@ -52,6 +58,8 @@ void touch_driver_read(lv_indev_t *drv, lv_indev_data_t *data);
 #else
 bool touch_driver_read(lv_indev_t *drv, lv_indev_data_t *data);
 #endif
+
+void touch_driver_set_calibrate(touch_calibration_t *cb);
 
 #ifdef __cplusplus
 } /* extern "C" */

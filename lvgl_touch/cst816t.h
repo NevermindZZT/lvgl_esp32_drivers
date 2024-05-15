@@ -29,6 +29,7 @@ typedef struct {
 
 void cst816t_init(uint16_t dev_addr);
 bool cst816t_read(lv_indev_t *drv, lv_indev_data_t *data);
+void cst816_t_set_calibrate_data(uint32_t x_start, uint32_t x_end, uint32_t y_start, uint32_t y_end);
 
 #endif
 

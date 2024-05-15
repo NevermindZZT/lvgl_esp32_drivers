@@ -13,6 +13,15 @@
 
 #define TAG "CST816T"
 
+typedef struct {
+    uint32_t x_a;
+    uint32_t x_b;
+    uint32_t y_a;
+    uint32_t y_b;
+    uint8_t enabled;
+} cst816t_calibrate_t;
+
+static cst816t_calibrate_t cst816t_calibrate_data = {0};
 
 static cst816t_status_t cst816t_status;
 uint8_t cst816t_read_len(uint16_t reg_addr,uint8_t *data,uint8_t len)
@@ -156,10 +165,16 @@ bool cst816t_read(lv_indev_t *drv, lv_indev_data_t *data) {
 #endif
 
     if (touch_points_num > 0){
-        data->point.x = x;
-        data->point.y = y;
+        if (cst816t_calibrate_data.enabled){
+            // ESP_LOGI(TAG, "before X=%u Y=%u", (int)x, (int)y);
+            data->point.x = (cst816t_calibrate_data.x_a * x + cst816t_calibrate_data.x_b) / 100;
+            data->point.y = (cst816t_calibrate_data.y_a * y + cst816t_calibrate_data.y_b) / 100;
+        } else {
+            data->point.x = x;
+            data->point.y = y;
+        }
         data->state = LV_INDEV_STATE_PR;
-        // ESP_LOGI(TAG, "X=%u Y=%u", (int)x, (int)y);
+        // ESP_LOGI(TAG, "X=%u Y=%u", (int)data->point.x, (int)data->point.y);
     }
     else{
         data->state = LV_INDEV_STATE_REL;
@@ -167,4 +182,14 @@ bool cst816t_read(lv_indev_t *drv, lv_indev_data_t *data) {
     // ESP_LOGI(TAG, "X=%u Y=%u", data->point.x, data->point.y);
     // ESP_LOGV(TAG, "X=%u Y=%u", data->point.x, data->point.y);
     return false;
+}
+
+
+void cst816_t_set_calibrate_data(uint32_t x_start, uint32_t x_end, uint32_t y_start, uint32_t y_end)
+{
+    cst816t_calibrate_data.x_a = LV_HOR_RES_MAX * 100 / (x_end - x_start);
+    cst816t_calibrate_data.x_b = LV_HOR_RES_MAX * 100 * x_start / (x_start - x_end);
+    cst816t_calibrate_data.y_a = LV_VER_RES_MAX * 100 / (y_end - y_start);
+    cst816t_calibrate_data.y_b = LV_VER_RES_MAX * 100 * y_start / (y_start - y_end);
+    cst816t_calibrate_data.enabled = 1;
 }
