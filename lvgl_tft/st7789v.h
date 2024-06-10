@@ -56,7 +56,7 @@ extern "C" {
 #define ST7789V_INVOFF       0x20
 #define ST7789V_INVON        0x21
 #define ST7789V_GAMSET       0x26    // Gamma set
-#define ST7789_DISPOFF      0x28
+#define ST7789V_DISPOFF      0x28
 #define ST7789V_DISPON       0x29
 #define ST7789V_CASET        0x2A
 #define ST7789V_RASET        0x2B
@@ -127,6 +127,7 @@ extern "C" {
 
 void st7789v_init(void);
 void st7789v_flush(lv_display_t *drv, const lv_area_t *area, uint8_t *color_map);
+void st7789v_display_on(char on);
 
 void st7789v_send_cmd(uint8_t cmd);
 void st7789v_send_data(void *data, uint16_t length);

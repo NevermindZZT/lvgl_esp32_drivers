@@ -6,6 +6,7 @@
 #include "disp_spi.h"
 #include "esp_lcd_backlight.h"
 #include "sdkconfig.h"
+#include "st7789v.h"
 
 void *disp_driver_init(void)
 {
@@ -117,6 +118,13 @@ void disp_driver_flush(lv_display_t * drv, const lv_area_t * area, uint8_t * col
     pcd8544_flush(drv, area, color_map);
 #endif
     lv_display_flush_ready(drv);
+}
+
+void disp_set_on(char on)
+{
+#if defined CONFIG_LV_TFT_DISPLAY_CONTROLLER_ST7789V
+    st7789v_display_on(on);
+#endif
 }
 
 void disp_driver_rounder(lv_display_t * disp_drv, lv_area_t * area)

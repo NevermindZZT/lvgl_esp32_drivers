@@ -117,6 +117,15 @@ void st7789v_init(void)
     st7789v_set_orientation(CONFIG_LV_DISPLAY_ORIENTATION);
 }
 
+void st7789v_display_on(char on)
+{
+    if (on) {
+        st7789v_send_cmd(ST7789V_DISPON);
+    } else {
+        st7789v_send_cmd(ST7789V_DISPOFF);
+    }
+}
+
 void st7789v_flush(lv_display_t * drv, const lv_area_t * area, uint8_t * color_map)
 {
     uint8_t data[4] = {0};

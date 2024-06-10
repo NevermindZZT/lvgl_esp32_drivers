@@ -189,7 +189,7 @@ bool lvgl_spi_driver_init(int host,
     return ESP_OK != ret;
 }
 
-bool lval_set_backlight(int brightness_percent)
+bool lvgl_set_backlight(int brightness_percent)
 {
     if (disp_backlight == NULL) {
         ESP_LOGE(TAG, "Backlight controller not initialized");
