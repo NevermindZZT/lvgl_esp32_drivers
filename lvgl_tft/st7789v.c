@@ -191,7 +191,16 @@ static void st7789v_send_color(void * data, size_t length)
 {
     disp_wait_for_pending_transactions();
     gpio_set_level(ST7789V_DC, 1);
-    disp_spi_send_colors(data, length);
+    
+    while (length > 0) {
+        size_t send_len = length;
+        if (send_len > DISP_BUF_SIZE) {
+            send_len = DISP_BUF_SIZE;
+        }
+        disp_spi_send_colors(data, send_len);
+        length -= send_len;
+        data += send_len;
+    }
 }
 
 static void st7789v_set_orientation(uint8_t orientation)
